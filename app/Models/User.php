@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -18,9 +19,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'avatar',
+        'uuid',
         'email',
         'password',
+        'address',
+        'is_admin',
+        'is_marketing',
+        'last_login_at',
     ];
 
     /**
@@ -40,5 +48,16 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'last_login_at' => 'datetime',
     ];
+
+    public function jwtTokens(): HasMany
+    {
+        return $this->hasMany(JwtToken::class, 'user_id');
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class, 'user_id');
+    }
 }
