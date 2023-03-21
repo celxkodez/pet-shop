@@ -4,8 +4,8 @@ services:
     app:
         build:
             args:
-                user: docker-user
-                uid: 1000
+                user: docker-user #change this and reconfigure this with appropriate permission
+                uid: 1000 #change this and reconfigure this with appropriate permission
             context: ./
             dockerfile: Dockerfile
         image: shop
@@ -25,11 +25,11 @@ services:
             MYSQL_DATABASE: ${DB_DATABASE}
             MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
             MYSQL_PASSWORD: ${DB_PASSWORD}
-            MYSQL_USER: ${DB_USERNAME}
+#            MYSQL_USER: ${DB_USERNAME}
             SERVICE_TAGS: dev
             SERVICE_NAME: mysql
-#        volumes:
-#            - mysql:/var/lib/mysql work on this later
+        volumes:
+            - ./docker-compose/mysql:/docker-entrypoint-initdb.d #work on this later
         networks:
             - shop
 
