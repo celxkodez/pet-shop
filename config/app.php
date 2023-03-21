@@ -195,6 +195,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * Third Party Package Service Providers...
+         */
+        L5Swagger\L5SwaggerServiceProvider::class,
+
     ],
 
     /*

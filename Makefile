@@ -65,3 +65,7 @@ migrate-database: artisan-command
 migrate-reset: ## Reset All Database Migrations.
 migrate-reset: p=migrate:reset
 migrate-reset: artisan-command
+
+run-test: ## Run All Test Present in the laravel application
+run-test: p=test
+run-test: artisan-command
