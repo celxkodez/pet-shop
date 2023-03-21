@@ -8,6 +8,7 @@ APP = $(DOCKER_COMPOSE) exec app
 PHP      = $(APP) php
 COMPOSER = $(APP) composer
 LARAVEL  = $(PHP) artisan
+ANALYSER  = $(PHP) ./vendor/bin/phpstan analyse
 
 # Misc
 .DEFAULT_GOAL = help
@@ -51,6 +52,10 @@ artisan-command: ## List all Laravel commands or pass the parameter "p=" to run 
 	@$(eval p ?=)
 	@$(LARAVEL) $(p)
 
+run-code-analysis: ## Run Larastan analyser
+	@$(eval p ?=)
+	@$(ANALYSER) $(p)
+
 clear-cache: p=cache:clear ## Clear the cache
 clear-cache: artisan-command
 
@@ -69,3 +74,7 @@ migrate-reset: artisan-command
 run-test: ## Run All Test Present in the laravel application
 run-test: p=test
 run-test: artisan-command
+
+insight: ## Run All PHP insight.
+insight: p=insight
+insight: artisan-command
