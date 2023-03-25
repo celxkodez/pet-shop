@@ -1,0 +1,51 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Pet Shop API - Swagger Documentation",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api": {},
+        "/users/create": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Create a User account",
+                "operationId": "02772ca7830b57a3b01db4a54ea16cc8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Parameter with mutliple examples",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "An int value.",
+                                "value": "1"
+                            },
+                            "uuid": {
+                                "summary": "An UUID value.",
+                                "value": "0006faf6-7a61-426c-9034-579f2cfcfa83"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "User",
+            "description": "User API Endpoints"
+        }
+    ]
+}
