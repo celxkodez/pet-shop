@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1'], function () {
 
     Route::prefix('user')->controller(Usercontroller::class)->group(function () {
-        Route::match(['get', 'head'],'/', 'user'); //auth middleware
+        Route::match(['get', 'head'],'/', 'user');//->middleware('auth:api'); //auth middleware
         Route::delete('/', 'deleteAuthUser');//auth middleware
         Route::match(['get', 'head'],'/orders', 'userOrders'); //auth middleware
         Route::post('/create', 'store');

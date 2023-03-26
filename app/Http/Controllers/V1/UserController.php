@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\V1;
 
+use App\Facades\JWTServiceFacade;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use App\Services\JWTService;
+use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 
 /**
@@ -19,9 +22,34 @@ class UserController extends Controller
     /**
      * Login User With Provider Credentials.
      */
-    public function login(UserRequest $request)
+    public function login(UserRequest $request, Guard $guard)
     {
-        //
+        $auth = auth('api');
+        if (! $auth->validate($request->validated())) {
+
+            return response()->json([
+                'status' => false,
+                'data' => [],
+                'error' => "Failed to authenticate user",
+                'errors' => [],
+                'extra' => [],
+            ], 422);
+
+        }
+
+        $token = JWTServiceFacade::requestToken($auth->user());
+
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'token' => $token->unique_id,
+                'expires_at' => $token->expires_at,
+                'type' => $token->token_title,
+            ],
+            'error' => null,
+            'errors' => [],
+            'extra' => [],
+        ], 200);
     }
 
     /**
@@ -29,7 +57,15 @@ class UserController extends Controller
      */
     public function user()
     {
-        //
+//        dd(\request()->header('authorization'));
+//        dd(auth('api')->check());
+        return response()->json([
+            'status' => true,
+            'data' => auth('api')->user(),
+            'error' => null,
+            'errors' => [],
+            'extra' => [],
+        ], 200);
     }
 
     /**
@@ -54,18 +90,25 @@ class UserController extends Controller
     {
         $input = $request->validated();
 
-        dd($input);
         try {
-            $data = User::create($input);
+            $password = \Hash::make($input['password']);
+            $user = User::create(array_merge([
+                'password' => $password,
+                'is_marketing' => !is_null($input['is_marketing']),
+            ], \Arr::except($input, ['password', 'is_marketing'])));
 
-//            $data
-
-            $responseData = array_merge($input->toArray(), [
-
+            $responseData = array_merge($user->toArray(), [
+                    'token' => (JWTServiceFacade::requestToken($user))->unique_id
             ]);
+
             return response()->json([
                 'status' => true,
-            ], 500);
+                'data' => $responseData,
+                'error' => null,
+                'errors' => [],
+                'extra' => [],
+            ], 200);
+
         } catch (\Throwable $exception) {
             \Log::error($exception);
 

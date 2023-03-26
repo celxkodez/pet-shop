@@ -20,7 +20,7 @@ class UserRequest extends BaseFormRequest
         $this->rules = [
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'string', 'confirmed', 'min:8'],
             'avatar' => ['string'],
             'address' => ['required', 'string'],
