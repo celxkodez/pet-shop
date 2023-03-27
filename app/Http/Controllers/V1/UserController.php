@@ -22,7 +22,41 @@ class UserController extends Controller
 {
 
     /**
-     * Login User With Provider Credentials.
+     *
+     * @OA\Post(
+     *  path="/api/v1/user/login",
+     *  summary="Login A User Account",
+     *  tags={"User"},
+     *  @OA\RequestBody(
+     *    required=true,
+     *    description="Pass user credentials",
+     *    @OA\JsonContent(
+     *       required={"email","password"},
+     *       @OA\Property(property="email", type="string", format="email", example="user@email.com"),
+     *       @OA\Property(property="password", type="string", format="password", example="password"),
+     *    ),
+     *  ),
+     *  @OA\Response(
+     *    response=200,
+     *    description="Ok"
+     *  ),
+     *  @OA\Response(
+     *    response=401,
+     *    description="Unauthorized"
+     *  ),
+     *  @OA\Response(
+     *    response=404,
+     *    description="Page not found"
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Unprocessable Entity"
+     *  ),
+     *  @OA\Response(
+     *    response=500,
+     *    description="Internal server error"
+     *  )
+     * )
      */
     public function login(UserRequest $request, Guard $guard): \Illuminate\Http\JsonResponse
     {
@@ -44,7 +78,32 @@ class UserController extends Controller
     }
 
     /**
-     * Return Authenticated user Instance.
+     * @OA\Get(
+     *  path="/api/v1/user",
+     *  summary="View A User Account",
+     *  tags={"User"},
+     *  security={ {"bearerAuth": {} }},
+     *  @OA\Response(
+     *    response=200,
+     *    description="Ok"
+     *  ),
+     *  @OA\Response(
+     *    response=401,
+     *    description="Unauthorized"
+     *  ),
+     *  @OA\Response(
+     *    response=404,
+     *    description="Page not found"
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Unprocessable Entity"
+     *  ),
+     *  @OA\Response(
+     *    response=500,
+     *    description="Internal server error"
+     *  )
+     * )
      */
     public function user(): \Illuminate\Http\JsonResponse
     {
@@ -54,21 +113,46 @@ class UserController extends Controller
 
     /**
      *
-     * @OA\Put(
-     *     path="api/v1/user/create",
-     *     summary="Create a User account",
-     *     tags={"User"},
-     *     @OA\RequestBody (
-     *          required=true,
-     *          name="first_name",
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="OK"
-     *     )
+     * @OA\Post(
+     *  path="/api/v1/user/create",
+     *  summary="Create A New User Account",
+     *  tags={"User"},
+     *  @OA\RequestBody(
+     *    required=true,
+     *    description="Supply User Data",
+     *    @OA\JsonContent(
+     *       required={"email","password","last_name","first_name","address","phone_number"},
+     *       @OA\Property(property="first_name", type="string", format="first_name", example="first_name"),
+     *       @OA\Property(property="last_name", type="string", format="last_name", example="last_name"),
+     *       @OA\Property(property="email", type="string", format="email", example="user@email.com"),
+     *       @OA\Property(property="password", type="string", format="password", example="password"),
+     *       @OA\Property(property="avatar", type="string", format="avatar", example="avatar"),
+     *       @OA\Property(property="address", type="string", format="address", example="address"),
+     *       @OA\Property(property="phone_number", type="string", format="phone_number", example="phone_number"),
+     *       @OA\Property(property="is_marketing", type="string", format="is_marketing", example="is_marketing"),
+     *    ),
+     *  ),
+     *  @OA\Response(
+     *    response=200,
+     *    description="Ok"
+     *  ),
+     *  @OA\Response(
+     *    response=401,
+     *    description="Unauthorized"
+     *  ),
+     *  @OA\Response(
+     *    response=404,
+     *    description="Page not found"
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Unprocessable Entity"
+     *  ),
+     *  @OA\Response(
+     *    response=500,
+     *    description="Internal server error"
+     *  )
      * )
-     *
-     * Store a newly created resource in storage.
      */
     public function store(UserRequest $request): \Illuminate\Http\JsonResponse
     {
@@ -82,7 +166,7 @@ class UserController extends Controller
             ], \Arr::except($input, ['password', 'is_marketing'])));
 
             $responseData = array_merge((new UserResource($user))->toArray($request), [
-                    'token' => (JWTServiceFacade::requestToken($user))->unique_id
+                    'token' => JWTServiceFacade::requestToken($user)->unique_id
             ]);
 
             return $this->jsonResponse(200, true, $responseData);
@@ -94,7 +178,42 @@ class UserController extends Controller
     }
 
     /**
-     * Return Auth User Orders.
+     * @OA\Get(
+     *  path="/api/v1/user/orders",
+     *  summary="List All User Orders",
+     *  tags={"User"},
+     *  security={ {"bearerAuth": {} }},
+     *  @OA\RequestBody(
+     *    required=false,
+     *    description="Search Params",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="page", type="integer", format="page", example="30"),
+     *       @OA\Property(property="limit", type="integer", format="limit", example="40"),
+     *       @OA\Property(property="sortBy", type="string", format="sortBy", example="created_by"),
+     *       @OA\Property(property="desc", type="string", format="desc", example="true"),
+     *    ),
+     *  ),
+     *  @OA\Response(
+     *    response=200,
+     *    description="Ok"
+     *  ),
+     *  @OA\Response(
+     *    response=401,
+     *    description="Unauthorized"
+     *  ),
+     *  @OA\Response(
+     *    response=404,
+     *    description="Page not found"
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Unprocessable Entity"
+     *  ),
+     *  @OA\Response(
+     *    response=500,
+     *    description="Internal server error"
+     *  )
+     * )
      */
     public function userOrders(UserRequest $request): \Illuminate\Http\JsonResponse|OrderResource
     {
@@ -126,7 +245,47 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *  path="/api/v1/user/edit",
+     *  summary="Update A User Account",
+     *  tags={"User"},
+     *  security={ {"bearerAuth": {} }},
+     *  @OA\RequestBody(
+     *    required=true,
+     *    description="Update User Record",
+     *    @OA\JsonContent(
+     *       required={"email","password","last_name","first_name","address","phone_number"},
+     *       @OA\Property(property="first_name", type="string", format="first_name", example="first_name"),
+     *       @OA\Property(property="last_name", type="string", format="last_name", example="last_name"),
+     *       @OA\Property(property="email", type="string", format="email", example="user@email.com"),
+     *       @OA\Property(property="password", type="string", format="password", example="password"),
+     *       @OA\Property(property="avatar", type="string", format="avatar", example="avatar"),
+     *       @OA\Property(property="address", type="string", format="address", example="address"),
+     *       @OA\Property(property="phone_number", type="string", format="phone_number", example="phone_number"),
+     *       @OA\Property(property="is_marketing", type="string", format="is_marketing", example="is_marketing"),
+     *    ),
+     *  ),
+     *  @OA\Response(
+     *    response=200,
+     *    description="Ok"
+     *  ),
+     *  @OA\Response(
+     *    response=401,
+     *    description="Unauthorized"
+     *  ),
+     *  @OA\Response(
+     *    response=404,
+     *    description="Page not found"
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Unprocessable Entity"
+     *  ),
+     *  @OA\Response(
+     *    response=500,
+     *    description="Internal server error"
+     *  )
+     * )
      */
     public function update(UserRequest $request): \Illuminate\Http\JsonResponse
     {
@@ -153,7 +312,33 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     *
+     * @OA\Delete(
+     *  path="/api/v1/user/delete",
+     *  summary="Delete A User Account",
+     *  tags={"User"},
+     *  security={ {"bearerAuth": {} }},
+     *  @OA\Response(
+     *    response=200,
+     *    description="Ok"
+     *  ),
+     *  @OA\Response(
+     *    response=401,
+     *    description="Unauthorized"
+     *  ),
+     *  @OA\Response(
+     *    response=404,
+     *    description="Page not found"
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Unprocessable Entity"
+     *  ),
+     *  @OA\Response(
+     *    response=500,
+     *    description="Internal server error"
+     *  )
+     * )
      */
     public function destroy(): \Illuminate\Http\JsonResponse
     {
@@ -170,6 +355,42 @@ class UserController extends Controller
         }
     }
 
+    /**
+     *
+     * @OA\Post(
+     *  path="/api/v1/user/forgot-password",
+     *  summary="Request Forgot Password Token",
+     *  tags={"User"},
+     *  @OA\RequestBody(
+     *    required=true,
+     *    description="Pass user email",
+     *    @OA\JsonContent(
+     *       required={"email"},
+     *       @OA\Property(property="email", type="string", format="email", example="user@email.com"),
+     *    ),
+     *  ),
+     *  @OA\Response(
+     *    response=200,
+     *    description="Ok"
+     *  ),
+     *  @OA\Response(
+     *    response=401,
+     *    description="Unauthorized"
+     *  ),
+     *  @OA\Response(
+     *    response=404,
+     *    description="Page not found"
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Unprocessable Entity"
+     *  ),
+     *  @OA\Response(
+     *    response=500,
+     *    description="Internal server error"
+     *  )
+     * )
+     */
     public function forgotPassword(UserRequest $request): \Illuminate\Http\JsonResponse
     {
         try {
@@ -191,6 +412,45 @@ class UserController extends Controller
         }
     }
 
+    /**
+     *
+     * @OA\Post(
+     *  path="/api/v1/user/reset-password-token",
+     *  summary="Recover User Account",
+     *  tags={"User"},
+     *  @OA\RequestBody(
+     *    required=true,
+     *    description="Supply Credentials",
+     *    @OA\JsonContent(
+     *       required={"email","password", "password_confirmation", "token"},
+     *       @OA\Property(property="email", type="string", format="email", example="user@email.com"),
+     *       @OA\Property(property="token", type="string", format="token", example="gfgfg885478hgf"),
+     *       @OA\Property(property="password", type="string", format="password", example="password"),
+     *       @OA\Property(property="password_confirmation", type="string", format="password", example="password"),
+     *    ),
+     *  ),
+     *  @OA\Response(
+     *    response=200,
+     *    description="Ok"
+     *  ),
+     *  @OA\Response(
+     *    response=401,
+     *    description="Unauthorized"
+     *  ),
+     *  @OA\Response(
+     *    response=404,
+     *    description="Page not found"
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Unprocessable Entity"
+     *  ),
+     *  @OA\Response(
+     *    response=500,
+     *    description="Internal server error"
+     *  )
+     * )
+     */
     public function resetPasswordToken(UserRequest $request): \Illuminate\Http\JsonResponse
     {
         $input = $request->validated();
@@ -216,6 +476,35 @@ class UserController extends Controller
         }
     }
 
+    /**
+     *
+     * @OA\Get(
+     *  path="/api/v1/user/logout",
+     *  summary="Logout A User Account",
+     *  tags={"User"},
+     *  security={ {"bearerAuth": {} }},
+     *  @OA\Response(
+     *    response=200,
+     *    description="Ok"
+     *  ),
+     *  @OA\Response(
+     *    response=401,
+     *    description="Unauthorized"
+     *  ),
+     *  @OA\Response(
+     *    response=404,
+     *    description="Page not found"
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Unprocessable Entity"
+     *  ),
+     *  @OA\Response(
+     *    response=500,
+     *    description="Internal server error"
+     *  )
+     * )
+     */
     public function logout(\Illuminate\Http\Request $request): \Illuminate\Http\JsonResponse
     {
         try {
