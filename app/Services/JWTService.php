@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\JwtToken;
 use App\Models\User;
 use App\Utils\Clock;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Log;
 use Lcobucci\JWT\Encoding\ChainedFormatter;
 use Lcobucci\JWT\Encoding\JoseEncoder;
@@ -98,7 +99,7 @@ class JWTService
             return $tokenModel;
         } catch (\Throwable $exception) {
 
-            Log::error($exception);
+            //Log::error($exception);
             return false;
         }
     }
@@ -120,5 +121,22 @@ class JWTService
             ->getToken($this->algorithm, $this->signingKey);
 
         return $this->token;
+    }
+
+    /**
+     * Revokes Token
+     *
+     * @param string $token
+     * @return bool
+     */
+    public function revokeToken(string $token): bool
+    {
+        if ($token = $this->validateToken($token)) {
+
+            return (bool) $token->delete();
+        }
+
+
+        return true;
     }
 }

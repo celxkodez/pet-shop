@@ -51,6 +51,10 @@ class JWTGuard implements Guard
 
             [$tokenTitle, $token] = explode(' ', $token);
 
+            if (! ($tokenTitle && $token)) {
+                return null;
+            }
+
             $token = JWTServiceFacade::validateToken($token, $tokenTitle);
 
             if (!$token) {
@@ -83,25 +87,10 @@ class JWTGuard implements Guard
      */
     public function validate(array $credentials = []): bool
     {
-//        if (! isset($credentials['email']) || ! isset($credentials['password'])) {
-//            $token = $this->request->header('authorization');
-//
-//            [$tokenTitle, $token] = explode(' ', $token);
-//
-//            if (! JWTServiceFacade::validateToken($token)) {
-//                return false;
-//            }
-//
-//            $tokenCheckFromDB = JwtToken::where('unique_id', $tokenTitle)
-//                ->where('title', $tokenTitle)
-//                ->first();
-//
-//            if ($tokenCheckFromDB) {
-//                $this->setUser($tokenCheckFromDB->user);
-//
-//                return true;
-//            }
-//        }
+        //todo modify this check to include other other attributes rather email and password
+        if (! isset($credentials['email']) || ! isset($credentials['password'])) {
+            return false;
+        }
 
         $user  = $this->userProvider->retrieveByCredentials($credentials);
 

@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\V1\Usercontroller;
-use Illuminate\Http\Request;
+use App\Http\Controllers\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,17 +14,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['prefix' => 'v1'], function () {
+Route::prefix('v1')
+    ->group(function () {
 
-    Route::prefix('user')->controller(Usercontroller::class)->group(function () {
-        Route::match(['get', 'head'],'/', 'user');//->middleware('auth:api'); //auth middleware
-        Route::delete('/', 'deleteAuthUser');//auth middleware
-        Route::match(['get', 'head'],'/orders', 'userOrders'); //auth middleware
-        Route::post('/create', 'store');
-        Route::post('/forgot-password', 'forgotPassword');
-        Route::match(['get', 'head'],'/logout', 'logout');
-        Route::post('/login', 'login');
-        Route::post('/reset-password-token', 'resetPasswordToken');
-        Route::put('/edit', 'update');
+//    dd('hello');
+    Route::prefix('user')
+        ->controller(UserController::class)
+        ->middleware('auth:api')
+        ->group(function () {
+
+            Route::withoutMiddleware('auth:api')->group(function () {
+
+                Route::post('/create', 'store');
+                Route::post('/forgot-password', 'forgotPassword');
+                Route::post('/login', 'login');
+                Route::post('/reset-password-token', 'resetPasswordToken');
+            });
+
+            Route::match(['get', 'head'], '/', 'user');
+            Route::delete('/', 'destroy');
+            Route::match(['get', 'head'], '/orders', 'userOrders');
+            Route::match(['get', 'head'],'/logout', 'logout');
+            Route::put('/edit', 'update');
     });
 });
