@@ -85,15 +85,8 @@ class AdminController extends UserController
      *    required=true,
      *    description="Supply Admin Data",
      *    @OA\JsonContent(
-     *       required={"email","password","last_name","first_name","address","phone_number","avatar"},
-     *       @OA\Property(property="first_name", type="string", format="first_name", example="first_name"),
-     *       @OA\Property(property="last_name", type="string", format="last_name", example="last_name"),
-     *       @OA\Property(property="email", type="string", format="email", example="user@email.com"),
-     *       @OA\Property(property="password", type="string", format="password", example="password"),
-     *       @OA\Property(property="avatar", type="string", format="avatar", example="avatar"),
-     *       @OA\Property(property="address", type="string", format="address", example="address"),
-     *       @OA\Property(property="phone_number", type="string", format="phone_number", example="phone_number"),
-     *       @OA\Property(property="is_marketing", type="string", format="is_marketing", example="is_marketing"),
+     *      required={"email","password","last_name","first_name","address","phone_number","avatar"},
+     *      ref="#/components/schemas/CreateUserProperties",
      *    ),
      *  ),
      *  @OA\Response(
@@ -142,6 +135,42 @@ class AdminController extends UserController
         }
     }
 
+    /**
+     *
+     * @OA\Get(
+     *  path="/api/v1/admin/user-listing",
+     *  summary="View All User Listings",
+     *  tags={"Admin"},
+     *  security={ {"bearerAuth": {} }},
+     *  @OA\RequestBody(
+     *    required=false,
+     *    description="Filter Data",
+     *    @OA\JsonContent(
+     *     ref="#/components/schemas/AdminListingProperties"
+     *    ),
+     *  ),
+     *  @OA\Response(
+     *    response=200,
+     *    description="Ok"
+     *  ),
+     *  @OA\Response(
+     *    response=401,
+     *    description="Unauthorized"
+     *  ),
+     *  @OA\Response(
+     *    response=404,
+     *    description="Page not found"
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Unprocessable Entity"
+     *  ),
+     *  @OA\Response(
+     *    response=500,
+     *    description="Internal server error"
+     *  )
+     * )
+     */
     public function userListing(AdminRequest $request)
     {
         $input = $request->validated();

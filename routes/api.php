@@ -41,19 +41,18 @@ Route::prefix('v1')
         //Admin EndPoints
         Route::prefix('admin')
             ->controller(AdminController::class)
-            ->middleware(['auth:api', 'admin'])
+            ->middleware(['admin'])
             ->group(function () {
 
-                Route::withoutMiddleware(['auth:api', 'admin'])->group(function () {
+                Route::withoutMiddleware(['admin'])->group(function () {
 
                     Route::post('/create', 'createAdmin');
                     Route::post('/login', 'login');
                     Route::match(['get', 'head'],'/logout', 'logout');
                 });
 
-                Route::match(['get', 'head'], '/', 'user');
-                Route::delete('/', 'destroy');
-                Route::match(['get', 'head'], '/orders', 'userListing');
-                Route::put('/edit', 'update');
+                Route::delete('/user-delete/{uuid}', 'deleteUser');
+                Route::match(['get', 'head'], '/user-listing', 'userListing');
+                Route::put('/user-edit/{uuid}', 'update');
             });
 });

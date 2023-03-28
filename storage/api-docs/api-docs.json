@@ -72,58 +72,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "email",
-                                    "password",
-                                    "last_name",
-                                    "first_name",
-                                    "address",
-                                    "phone_number",
-                                    "avatar"
-                                ],
-                                "properties": {
-                                    "first_name": {
-                                        "type": "string",
-                                        "format": "first_name",
-                                        "example": "first_name"
-                                    },
-                                    "last_name": {
-                                        "type": "string",
-                                        "format": "last_name",
-                                        "example": "last_name"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "user@email.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "password"
-                                    },
-                                    "avatar": {
-                                        "type": "string",
-                                        "format": "avatar",
-                                        "example": "avatar"
-                                    },
-                                    "address": {
-                                        "type": "string",
-                                        "format": "address",
-                                        "example": "address"
-                                    },
-                                    "phone_number": {
-                                        "type": "string",
-                                        "format": "phone_number",
-                                        "example": "phone_number"
-                                    },
-                                    "is_marketing": {
-                                        "type": "string",
-                                        "format": "is_marketing",
-                                        "example": "is_marketing"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/CreateUserProperties"
                             }
                         }
                     }
@@ -145,6 +94,48 @@
                         "description": "Internal server error"
                     }
                 }
+            }
+        },
+        "/api/v1/admin/user-listing": {
+            "get": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "View All User Listings",
+                "operationId": "6409b580dc46970289ea9d2b3177b632",
+                "requestBody": {
+                    "description": "Filter Data",
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AdminListingProperties"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Page not found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/v1/user/login": {
@@ -649,17 +640,110 @@
             }
         }
     },
-    "tags": [
-        {
-            "name": "Admin",
-            "description": "Admin API Endpoints"
-        },
-        {
-            "name": "User",
-            "description": "User API Endpoints"
-        }
-    ],
     "components": {
+        "schemas": {
+            "CreateUserProperties": {
+                "properties": {
+                    "first_name": {
+                        "type": "string",
+                        "format": "first_name",
+                        "example": "first_name"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "format": "last_name",
+                        "example": "last_name"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "user@email.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "password"
+                    },
+                    "avatar": {
+                        "type": "string",
+                        "format": "avatar",
+                        "example": "avatar"
+                    },
+                    "address": {
+                        "type": "string",
+                        "format": "address",
+                        "example": "address"
+                    },
+                    "phone_number": {
+                        "type": "string",
+                        "format": "phone_number",
+                        "example": "phone_number"
+                    },
+                    "is_marketing": {
+                        "type": "string",
+                        "format": "is_marketing",
+                        "example": "is_marketing"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "CreateUserProperties"
+                }
+            },
+            "AdminListingProperties": {
+                "properties": {
+                    "page": {
+                        "type": "integer",
+                        "format": "page",
+                        "example": "15"
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "format": "limit",
+                        "example": "15"
+                    },
+                    "sortBy": {
+                        "type": "string",
+                        "format": "sortBy",
+                        "example": "created_at"
+                    },
+                    "desc": {
+                        "type": "boolean",
+                        "format": "desc",
+                        "example": "true"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "example@email.com"
+                    },
+                    "address": {
+                        "type": "string",
+                        "format": "address",
+                        "example": "address"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "format": "phone",
+                        "example": "+190545455"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "created_at",
+                        "example": "13-3-1994"
+                    },
+                    "marketing": {
+                        "type": "string",
+                        "format": "marketing",
+                        "example": "1"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "AdminListingProperties"
+                }
+            }
+        },
         "securitySchemes": {
             "bearerAuth": {
                 "type": "apiKey",
@@ -669,5 +753,15 @@
                 "in": "header"
             }
         }
-    }
+    },
+    "tags": [
+        {
+            "name": "Admin",
+            "description": "Admin API Endpoints"
+        },
+        {
+            "name": "User",
+            "description": "User API Endpoints"
+        }
+    ]
 }

@@ -21,7 +21,7 @@ class UserRequest extends BaseFormRequest
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
             'email' => ['required', 'email', 'unique:users'],
-            'password' => ['required', 'string', 'confirmed', 'min:8'],
+            'password' => ['required', 'string', 'confirmed', 'min:4'],
             'avatar' => ['string'],
             'address' => ['required', 'string'],
             'phone_number' => ['required', 'string'],
@@ -56,7 +56,7 @@ class UserRequest extends BaseFormRequest
         $this->rules = [
             'email' => ['required', 'email'],
             'token' => ['required', 'string'],
-            'password' => ['required', 'string', 'confirmed', 'min:8'],
+            'password' => ['required', 'string', 'confirmed', 'min:4'],
         ];
     }
 

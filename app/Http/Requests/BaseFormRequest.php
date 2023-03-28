@@ -30,13 +30,7 @@ abstract class BaseFormRequest extends FormRequest
     public function rules(): array
     {
         $route = $this->path();
-        $method = $this->get('_method', null);
-
-        if ($method === null) {
-            $method = $this->method();
-        }
-
-        $method = strtolower($method);
+        $method = $this->getRequestMethod();
 
         $requestRuleMethod = $this->routeRequest["$route|$method"] ?? 'default';
 
@@ -45,5 +39,22 @@ abstract class BaseFormRequest extends FormRequest
         }
 
         return $this->rules;
+    }
+
+    public function getPath(): string
+    {
+        return $this->path();
+    }
+
+    public function getRequestMethod(): string
+    {
+        //synchronize laravel request masking
+        $method = $this->get('_method', null);
+
+        if ($method === null) {
+            $method = $this->method();
+        }
+
+        return strtolower($method);
     }
 }
