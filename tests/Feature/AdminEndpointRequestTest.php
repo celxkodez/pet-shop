@@ -2,17 +2,23 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 
-class UseEndpointsRequestTest extends BaseTestClass
+
+use App\Models\User;
+use Database\Seeders\UserTableSeeder;
+
+class AdminEndpointRequestTest extends BaseTestClass
 {
+
     public function test_user_can_login()
     {
-        $user = User::factory()->create();
+        $this->artisan('db:seed', ['class' => UserTableSeeder::class]);
 
-        $response = $this->post('/api/v1/user/login', [
-            'email' => $user->email,
-            'password' => 'password'
+
+        $user = User::where('email', 'admin@buckhill.co.uk')->first();
+        $response = $this->post('/api/v1/admin/login', [
+            'email' => 'admin@buckhill.co.uk',
+            'password' => 'admin'
         ], $this->requestHeaders);
 
         $response->assertJsonStructure([
@@ -44,11 +50,11 @@ class UseEndpointsRequestTest extends BaseTestClass
     /**
      * @test
      *
-     * @dataProvider userData
+     * @dataProvider adminData
      */
     public function test_user_be_created($input)
     {
-        $response = $this->post('/api/v1/user/create', $input, $this->requestHeaders);
+        $response = $this->post('/api/v1/admin/create', $input, $this->requestHeaders);
 
         $response->assertStatus(200);
 
@@ -81,14 +87,15 @@ class UseEndpointsRequestTest extends BaseTestClass
     /**
      * @test
      *
-     * @dataProvider userData
+     * @dataProvider adminData
      */
     public function test_user_can_be_updated($input)
     {
-        $user = $this->loginUser();
+        $user = $this->loginUser('Admin');
 
+        $userTobeUpdated = User::factory()->create();
 
-        $response = $this->put('/api/v1/user/edit', $input, $this->requestHeaders);
+        $response = $this->put('/api/v1/admin/user-edit/' . $userTobeUpdated->uuid, $input, $this->requestHeaders);
 
         $response->assertStatus(200);
 
@@ -118,90 +125,32 @@ class UseEndpointsRequestTest extends BaseTestClass
 
     public function test_user_can_be_deleted()
     {
-        $user = $this->loginUser();
+        $user = $this->loginUser('Admin');
 
-        $response = $this->delete('/api/v1/user', [], $this->requestHeaders);
+        $userToDeDeleted = User::factory()->create();
+
+        $response = $this->delete('/api/v1/user-delete/' . $userToDeDeleted->uuid, [], $this->requestHeaders);
 
         $response->assertStatus(200);
 
         $this->assertDatabaseMissing('users', [
-            'id' => $user->id,
-            'uuid' => $user->uuid,
-            'first_name' => $user->first_name,
-            'last_name' => $user->last_name,
+            'id' => $userToDeDeleted->id,
+            'uuid' => $userToDeDeleted->uuid,
+            'first_name' => $userToDeDeleted->first_name,
+            'last_name' => $userToDeDeleted->last_name,
         ]);
     }
 
-    public function test_user_password_recovery_flow()
+    public function test_admin_logout_and_fetch_user_data()
     {
-        //password recovery flow includes forgot password token request, password change and login action
-
-        $user = User::factory()->create();
-
-        $tokenRequest = $this->post('api/v1/user/forgot-password', [
-                'email' => $user->email
-            ], $this->requestHeaders);
-
-        $tokenRequest->assertStatus(200);
-
-        $tokenRequest->assertJsonStructure($this->successPayload(['data' => [
-            'reset_token',
-        ]], true));
-
-        $tokenRequest = $tokenRequest->json();
-
-        $changePasswordRequest = $this->post('api/v1/user/reset-password-token', [
-            'token' => $tokenRequest['data']['reset_token'],
-            'email' => $user->email,
-            'password' => 'password-change',
-            'password_confirmation' => 'password-change'
-        ], $this->requestHeaders);
-
-        $changePasswordRequest->assertStatus(200);
-
-        $changePasswordRequest->assertJson($this->successPayload([
-            'data' => [
-                'message' => "Password has been successfully updated"
-            ]
-        ]));
-
-        $loginRequest = $this->post('api/v1/user/login', [
-            'email' => $user->email,
-            'password' => 'password-change',
-        ], $this->requestHeaders);
-
-        $loginRequest->assertStatus(200);
-        $loginRequest->assertJsonStructure($this->successPayload([
-            'data' => [
-                'token',
-                'expires_at',
-                'type',
-            ]
-        ], true));
-    }
-
-    public function test_user_logout_and_fetch_user_data()
-    {
-        $user = $this->loginUser();
+        $user = $this->loginUser('Admin');
 
         // fetch user to test that login works
-        $fetchUserRequest = $this->get('api/v1/user/', $this->requestHeaders);
+        $fetchUserRequest = $this->get('api/v1/admin/user-listing', $this->requestHeaders);
 
         $fetchUserRequest->assertStatus(200);
-        $fetchUserRequest->assertJson($this->successPayload([
-            'data' => [
-                'uuid' => $user->uuid,
-                'email' => $user->email,
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
-                'avatar' => $user->avatar,
-                'is_marketing' => $user->is_marketing,
-                'phone_number' => $user->phone_number,
-                'address' => $user->address,
-            ]
-        ]));
 
-        $logoutUserRequest = $this->get('api/v1/user/logout', $this->requestHeaders);
+        $logoutUserRequest = $this->get('api/v1/admin/logout', $this->requestHeaders);
         $logoutUserRequest->assertStatus(200);
         $logoutUserRequest->assertJson($this->successPayload([]));
 
@@ -212,26 +161,27 @@ class UseEndpointsRequestTest extends BaseTestClass
     }
 
 
-    public function userData(): array
+    public function adminData(): array
     {
         return [
             [
                 [
-                    'email' => 'testUser1@email',
+                    'email' => 'testadmin1@email',
                     'first_name' => 'Test',
-                    'last_name' => 'User1',
+                    'last_name' => 'Admin1',
                     'address' => 'No1, Alter Street.',
                     'phone_number' => '+178884545',
                     'password' => 'password',
                     'password_confirmation' => 'password',
+                    'avatar' => "test_png.jpg",
                 ]
             ],
 
             [
                 [
-                    'email' => 'testUser2@email',
+                    'email' => 'testadmin2@email',
                     'first_name' => 'Test',
-                    'last_name' => 'User2',
+                    'last_name' => 'Admin2',
                     'address' => 'No1, Alter Street2.',
                     'phone_number' => '+17888454524',
                     'password' => 'password',
