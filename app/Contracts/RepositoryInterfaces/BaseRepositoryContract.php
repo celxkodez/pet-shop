@@ -5,6 +5,7 @@ namespace App\Contracts\RepositoryInterfaces;
 use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -52,6 +53,12 @@ Interface BaseRepositoryContract
      *
      */
     public function findOrFail(int|string $entityId = 0, array $columns = ['*']): Model;
+
+
+    /**
+     * @return Builder|Model
+     */
+    public function builder(): Builder|Model;
 
     /**
      * @param array $criteria

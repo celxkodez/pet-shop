@@ -6,6 +6,147 @@
     },
     "paths": {
         "/api": {},
+        "/api/v1/admin/login": {
+            "post": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Login Into Admin Account",
+                "operationId": "1cad8e75c8c3a4ed21bd493c899e09cf",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@email.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Page not found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/admin/create": {
+            "post": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Create A New Admin Account",
+                "operationId": "c362e957098e6b4b2185ee7fd6271e8c",
+                "requestBody": {
+                    "description": "Supply Admin Data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "last_name",
+                                    "first_name",
+                                    "address",
+                                    "phone_number",
+                                    "avatar"
+                                ],
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string",
+                                        "format": "first_name",
+                                        "example": "first_name"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "format": "last_name",
+                                        "example": "last_name"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@email.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password"
+                                    },
+                                    "avatar": {
+                                        "type": "string",
+                                        "format": "avatar",
+                                        "example": "avatar"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "format": "address",
+                                        "example": "address"
+                                    },
+                                    "phone_number": {
+                                        "type": "string",
+                                        "format": "phone_number",
+                                        "example": "phone_number"
+                                    },
+                                    "is_marketing": {
+                                        "type": "string",
+                                        "format": "is_marketing",
+                                        "example": "is_marketing"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Page not found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/api/v1/user/login": {
             "post": {
                 "tags": [
@@ -508,14 +649,17 @@
             }
         }
     },
-    "components": {
-        "schemas": {
-            "Controller": {
-                "xml": {
-                    "name": "APIResponse"
-                }
-            }
+    "tags": [
+        {
+            "name": "Admin",
+            "description": "Admin API Endpoints"
         },
+        {
+            "name": "User",
+            "description": "User API Endpoints"
+        }
+    ],
+    "components": {
         "securitySchemes": {
             "bearerAuth": {
                 "type": "apiKey",
@@ -525,11 +669,5 @@
                 "in": "header"
             }
         }
-    },
-    "tags": [
-        {
-            "name": "User",
-            "description": "User API Endpoints"
-        }
-    ]
+    }
 }

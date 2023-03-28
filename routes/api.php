@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\V1\AdminController;
 use App\Http\Controllers\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,25 +17,43 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')
     ->group(function () {
+        //User EndPoints
+        Route::prefix('user')
+            ->controller(UserController::class)
+            ->middleware('auth:api')
+            ->group(function () {
 
-//    dd('hello');
-    Route::prefix('user')
-        ->controller(UserController::class)
-        ->middleware('auth:api')
-        ->group(function () {
+                Route::withoutMiddleware('auth:api')->group(function () {
 
-            Route::withoutMiddleware('auth:api')->group(function () {
+                    Route::post('/create', 'store');
+                    Route::post('/forgot-password', 'forgotPassword');
+                    Route::post('/login', 'login');
+                    Route::post('/reset-password-token', 'resetPasswordToken');
+                });
 
-                Route::post('/create', 'store');
-                Route::post('/forgot-password', 'forgotPassword');
-                Route::post('/login', 'login');
-                Route::post('/reset-password-token', 'resetPasswordToken');
+                Route::match(['get', 'head'], '/', 'user');
+                Route::delete('/', 'destroy');
+                Route::match(['get', 'head'], '/orders', 'userOrders');
+                Route::match(['get', 'head'],'/logout', 'logout');
+                Route::put('/edit', 'update');
+        });
+
+        //Admin EndPoints
+        Route::prefix('admin')
+            ->controller(AdminController::class)
+            ->middleware(['auth:api', 'admin'])
+            ->group(function () {
+
+                Route::withoutMiddleware(['auth:api', 'admin'])->group(function () {
+
+                    Route::post('/create', 'createAdmin');
+                    Route::post('/login', 'login');
+                    Route::match(['get', 'head'],'/logout', 'logout');
+                });
+
+                Route::match(['get', 'head'], '/', 'user');
+                Route::delete('/', 'destroy');
+                Route::match(['get', 'head'], '/orders', 'userListing');
+                Route::put('/edit', 'update');
             });
-
-            Route::match(['get', 'head'], '/', 'user');
-            Route::delete('/', 'destroy');
-            Route::match(['get', 'head'], '/orders', 'userOrders');
-            Route::match(['get', 'head'],'/logout', 'logout');
-            Route::put('/edit', 'update');
-    });
 });
