@@ -136,7 +136,6 @@ class JWTService
             return (bool) $token->delete();
         }
 
-
         return true;
     }
 }

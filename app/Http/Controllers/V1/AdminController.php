@@ -137,7 +137,7 @@ class AdminController extends UserController
             $user = User::create(array_merge([
                 'password' => $password,
                 'is_admin' => true,
-                'is_marketing' => !is_null($input['is_marketing']),
+                'is_marketing' => isset($input['is_marketing']),
             ], \Arr::except($input, ['password', 'is_marketing'])));
 
             $responseData = array_merge((new UserResource($user))->toArray($request), [
@@ -293,7 +293,7 @@ class AdminController extends UserController
 
                 $user->update(array_merge([
                     'password' => $password,
-                    'is_marketing' => !is_null($input['is_marketing']),
+                    'is_marketing' => isset($input['is_marketing']),
                 ], \Arr::except($input, ['password', 'is_marketing'])));
 
                 $responseData = new UserResource($user);
