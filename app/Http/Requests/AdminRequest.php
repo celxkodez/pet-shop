@@ -83,6 +83,6 @@ class AdminRequest extends UserRequest
 
     public function getPath(): string
     {
-        dd($this->getPath());
+        return $this->route()->uri();
     }
 }

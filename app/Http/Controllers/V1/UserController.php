@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1;
 
 use App\Facades\JWTServiceFacade;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\V1\UserResource;

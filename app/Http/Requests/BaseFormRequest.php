@@ -29,7 +29,7 @@ abstract class BaseFormRequest extends FormRequest
      */
     public function rules(): array
     {
-        $route = $this->path();
+        $route = $this->getPath();
         $method = $this->getRequestMethod();
 
         $requestRuleMethod = $this->routeRequest["$route|$method"] ?? 'default';

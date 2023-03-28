@@ -18,9 +18,9 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (auth('api')->check() && auth('api')->user()->is_admin) {
-            throw new AuthenticationException();
+            return $next($request);
         }
 
-        return $next($request);
+        throw new AuthenticationException();
     }
 }

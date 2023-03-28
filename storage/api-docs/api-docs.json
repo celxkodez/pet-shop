@@ -12,7 +12,7 @@
                     "Admin"
                 ],
                 "summary": "Login Into Admin Account",
-                "operationId": "1cad8e75c8c3a4ed21bd493c899e09cf",
+                "operationId": "71828f836af3373bc948cade5d8ba326",
                 "requestBody": {
                     "description": "Pass user credentials",
                     "required": true,
@@ -136,6 +136,56 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        },
+        "/api/v1/admin/user-edit/{uuid}": {
+            "put": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Update User Account",
+                "operationId": "072d22e651e6b7b5b867ffe0d59339d4",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of User",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "string"
+                        },
+                        "example": "uuiuytyytytj5656jk-jnnknnkbkjnk-nghn6n565"
+                    }
+                ],
+                "requestBody": {
+                    "description": "Supply Admin Data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateUserProperties"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Page not found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
             }
         },
         "/api/v1/user/login": {

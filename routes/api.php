@@ -47,12 +47,12 @@ Route::prefix('v1')
                 Route::withoutMiddleware(['admin'])->group(function () {
 
                     Route::post('/create', 'createAdmin');
-                    Route::post('/login', 'login');
+                    Route::post('/login', 'loginAdmin');
                     Route::match(['get', 'head'],'/logout', 'logout');
                 });
 
                 Route::delete('/user-delete/{uuid}', 'deleteUser');
                 Route::match(['get', 'head'], '/user-listing', 'userListing');
-                Route::put('/user-edit/{uuid}', 'update');
+                Route::put('/user-edit/{uuid}', 'userEdit');
             });
 });

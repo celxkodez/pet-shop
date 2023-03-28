@@ -11,6 +11,7 @@ use App\Http\Resources\V1\UserResource;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Database\Eloquent\Builder;
+use phpDocumentor\Reflection\Types\Parent_;
 
 
 /**
@@ -65,14 +66,30 @@ class AdminController extends UserController
      *  )
      * )
      */
-    public function login(UserRequest $request, Guard $guard): \Illuminate\Http\JsonResponse
+    public function loginAdmin(AdminRequest $request): \Illuminate\Http\JsonResponse
     {
         $user = User::whereEmail($request->email)->whereIsAdmin(true)->first();
 
         if (! $user) {
             return $this->errorResponse('User Not and Admin', 422);
         }
-        return parent::login($request, $guard);
+
+        $auth = auth('api');
+
+        if (! $auth->validate($request->validated())) {
+
+            return $this->errorResponse("Failed to authenticate user", 422);
+        }
+
+        $token = JWTServiceFacade::requestToken($auth->user());
+
+        $data = [
+            'token' => $token->unique_id,
+            'expires_at' => $token->expires_at,
+            'type' => $token->token_title,
+        ];
+
+        return $this->jsonResponse(200, true, $data);
     }
 
     /**
@@ -171,11 +188,9 @@ class AdminController extends UserController
      *  )
      * )
      */
-    public function userListing(AdminRequest $request)
+    public function userListing(AdminRequest $request): \Illuminate\Http\JsonResponse|OrderResource
     {
         $input = $request->validated();
-
-
         try {
             $fields = [
                 'created_at' => 'created_at',
@@ -191,7 +206,7 @@ class AdminController extends UserController
             $searchFields = [
                 'first_name' => $input['first_name'] ?? '',
                 'email' => $input['email'] ?? '',
-                'phone' => $input['phone'] ?? '',
+                'phone_number' => $input['phone'] ?? '',
                 'address' => $input['address'] ?? '',
                 'created_at' => $input['created_at'] ?? '',
                 'is_marketing' => $input['is_marketing'] ?? '',
@@ -210,6 +225,147 @@ class AdminController extends UserController
 
 
             return new OrderResource($data);
+        } catch (\Throwable $exception) {
+            \Log::error($exception);
+
+            return $this->errorResponse('Server Error!',500);
+        }
+    }
+
+    /**
+     *
+     * @OA\Put(
+     *  path="/api/v1/admin/user-edit/{uuid}",
+     *  summary="Update User Account",
+     *  tags={"Admin"},
+     *  @OA\Parameter(
+     *    description="UUID of User",
+     *    in="path",
+     *    name="uuid",
+     *    required=true,
+     *    example="uuiuytyytytj5656jk-jnnknnkbkjnk-nghn6n565",
+     *    @OA\Schema(
+     *       type="string",
+     *       format="string"
+     *    )
+     *  ),
+     *  @OA\RequestBody(
+     *    required=true,
+     *    description="Supply Admin Data",
+     *    @OA\JsonContent(
+     *      required={"email","password","last_name","first_name","address","phone_number","avatar"},
+     *      ref="#/components/schemas/CreateUserProperties",
+     *    ),
+     *  ),
+     *  @OA\Response(
+     *    response=200,
+     *    description="Ok"
+     *  ),
+     *  @OA\Response(
+     *    response=401,
+     *    description="Unauthorized"
+     *  ),
+     *  @OA\Response(
+     *    response=404,
+     *    description="Page not found"
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Unprocessable Entity"
+     *  ),
+     *  @OA\Response(
+     *    response=500,
+     *    description="Internal server error"
+     *  )
+     * )
+     */
+    public function userEdit(AdminRequest $request, $uuid): \Illuminate\Http\JsonResponse
+    {
+        $input = $request->validated();
+        try {
+            $user = User::where('uuid', $uuid)->first();
+            if ($user?->is_admin) {
+                return $this->errorResponse('Admin User Cannot Be editted',422);
+            }
+
+            if ($user) {
+                $password = \Hash::make($input['password']);
+
+                $user->update(array_merge([
+                    'password' => $password,
+                    'is_marketing' => !is_null($input['is_marketing']),
+                ], \Arr::except($input, ['password', 'is_marketing'])));
+
+                $responseData = new UserResource($user);
+
+                return $this->jsonResponse(200, true, $responseData);
+            }
+
+            return $this->errorResponse('User not found',404);
+
+        } catch (\Throwable $exception) {
+            \Log::error($exception);
+
+            return $this->errorResponse('Server Error!',500);
+        }
+    }
+
+    /**
+     *
+     * @OA\Delete(
+     *  path="/api/v1/admin/user-delete/{uuid}",
+     *  summary="Delete A User Account",
+     *  tags={"User"},
+     *  security={ {"bearerAuth": {} }},
+     *  @OA\Parameter(
+     *    description="UUID of User",
+     *    in="path",
+     *    name="uuid",
+     *    required=true,
+     *    example="uuiuytyytytj5656jk-jnnknnkbkjnk-nghn6n565",
+     *    @OA\Schema(
+     *       type="string",
+     *       format="string"
+     *    )
+     *  ),
+     *  @OA\Response(
+     *    response=200,
+     *    description="Ok"
+     *  ),
+     *  @OA\Response(
+     *    response=401,
+     *    description="Unauthorized"
+     *  ),
+     *  @OA\Response(
+     *    response=404,
+     *    description="Page not found"
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Unprocessable Entity"
+     *  ),
+     *  @OA\Response(
+     *    response=500,
+     *    description="Internal server error"
+     *  )
+     * )
+     */
+    public function deleteUser($uuid): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $user = User::where('uuid', $uuid)->first();
+
+            if ($user?->is_admin) {
+                return $this->errorResponse('Admin User Cannot Be Deleted!',422);
+            }
+
+            if ($user) {
+                $user->delete();
+
+                return $this->jsonResponse(200, true, []);
+            }
+
+            return $this->errorResponse('User not found',404);
         } catch (\Throwable $exception) {
             \Log::error($exception);
 
