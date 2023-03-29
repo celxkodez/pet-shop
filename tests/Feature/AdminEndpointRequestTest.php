@@ -129,7 +129,7 @@ class AdminEndpointRequestTest extends BaseTestClass
 
         $userToDeDeleted = User::factory()->create();
 
-        $response = $this->delete('/api/v1/user-delete/' . $userToDeDeleted->uuid, [], $this->requestHeaders);
+        $response = $this->delete('/api/v1/admin/user-delete/' . $userToDeDeleted->uuid, [], $this->requestHeaders);
 
         $response->assertStatus(200);
 

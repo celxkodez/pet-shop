@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Contracts\RepositoryInterfaces\OrderRepositoryContract;
+use App\Contracts\RepositoryInterfaces\UserRepositoryContract;
 use App\Facades\JWTServiceFacade;
 use App\Http\Requests\AdminRequest;
 use App\Http\Requests\UserRequest;
@@ -22,11 +23,11 @@ use phpDocumentor\Reflection\Types\Parent_;
  */
 class AdminController extends UserController
 {
-    protected OrderRepositoryContract $orderRepository;
+    protected UserRepositoryContract $userRepository;
 
-    public function __construct(OrderRepositoryContract $repositoryContract)
+    public function __construct(UserRepositoryContract $repositoryContract)
     {
-        $this->orderRepository = $repositoryContract;
+        $this->userRepository = $repositoryContract;
     }
 
     /**
@@ -128,7 +129,7 @@ class AdminController extends UserController
      *  )
      * )
      */
-    public function createUser(AdminRequest $request): \Illuminate\Http\JsonResponse
+    public function createAdmin(AdminRequest $request): \Illuminate\Http\JsonResponse
     {
         $input = $request->validated();
 
@@ -156,7 +157,7 @@ class AdminController extends UserController
      *
      * @OA\Get(
      *  path="/api/v1/admin/user-listing",
-     *  summary="View All User Listings",
+     *  summary="View All Users",
      *  tags={"Admin"},
      *  security={ {"bearerAuth": {} }},
      *  @OA\RequestBody(
@@ -188,7 +189,7 @@ class AdminController extends UserController
      *  )
      * )
      */
-    public function userListing(AdminRequest $request): \Illuminate\Http\JsonResponse|OrderResource
+    public function userListing(AdminRequest $request): \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $input = $request->validated();
         try {
@@ -210,21 +211,20 @@ class AdminController extends UserController
                 'address' => $input['address'] ?? '',
                 'created_at' => $input['created_at'] ?? '',
                 'is_marketing' => $input['is_marketing'] ?? '',
+                'is_admin' => 0
             ];
 
-            $orderQuery = $this->orderRepository->builder();
+            $userQuery = $this->userRepository->builder();
 
-            $orderQuery->whereHas('user', function (Builder $builder) use ($searchFields) {
-                foreach ($searchFields as $key => $field) {
-                    $builder->where($key, 'like', "%$field%");
-                }
-            });
+            foreach ($searchFields as $key => $field) {
+                $userQuery->where($key, 'like', "%$field%");
+            }
 
-            $data = $orderQuery->orderBy($orderByField, $orderByClause)
+            $data = $userQuery->orderBy($orderByField, $orderByClause)
                 ->paginate($input['limit'] ?? 10);
 
 
-            return new OrderResource($data);
+            return UserResource::collection($data);
         } catch (\Throwable $exception) {
             \Log::error($exception);
 

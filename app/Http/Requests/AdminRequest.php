@@ -67,18 +67,7 @@ class AdminRequest extends UserRequest
 
     public function editUserMethodRule(): void
     {
-        $this->rules = [
-            'page' => ['integer'],
-            'limit' => ['integer'],
-            'sortBy' => ['string'],
-            'desc' => ['string'],
-            'first_name' => ['string'],
-            'email' => ['string'],
-            'phone' => ['string'],
-            'address' => ['string'],
-            'created_at' => ['string'],
-            'marketing' => ['string'],
-        ];
+        $this->createUserMethodRule();
     }
 
     public function getPath(): string
