@@ -35,7 +35,7 @@ Route::prefix('v1')
                 Route::match(['get', 'head'], '/', 'user');
                 Route::delete('/', 'destroy');
                 Route::match(['get', 'head'], '/orders', 'userOrders');
-                Route::match(['get', 'head'],'/logout', 'logout');
+                Route::match(['get', 'head'], '/logout', 'logout');
                 Route::put('/edit', 'update');
         });
 
@@ -49,7 +49,7 @@ Route::prefix('v1')
 
                     Route::post('/create', 'createAdmin');
                     Route::post('/login', 'loginAdmin');
-                    Route::match(['get', 'head'],'/logout', 'logout');
+                    Route::match(['get', 'head'], '/logout', 'logout');
                 });
 
                 Route::delete('/user-delete/{uuid}', 'deleteUser');
@@ -67,7 +67,7 @@ Route::prefix('v1')
                 Route::match(['put', 'patch'], '/{uuid}', 'update');
                 Route::delete('/{uuid}', 'destroy');
                 Route::match(['get', 'head'], '/{uuid}/download', 'download');
-                Route::match(['get', 'head'],'/', 'index');
+                Route::match(['get', 'head'], '/', 'index');
                 Route::match(['get', 'head'], '/dashboard', 'dashboard');
                 Route::match(['get', 'head'], '/shipment-locator', 'shipmentLocator');
             });

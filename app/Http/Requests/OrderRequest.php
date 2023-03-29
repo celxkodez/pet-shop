@@ -8,6 +8,8 @@ class OrderRequest extends BaseFormRequest
 {
     protected array $routeRequest = [
         'api/v1/order/create|post' => 'createMethodRule',
+        'api/v1/order/{uuid}|put' => 'createMethodRule',
+        'api/v1/order/{uuid}|patch' => 'createMethodRule',
     ];
 
     /**
@@ -51,6 +53,54 @@ class OrderRequest extends BaseFormRequest
             'address' => ['required',],
             'address.billing' => ['required', 'string'],
             'address.shipping' => ['required', 'string'],
+        ];
+    }
+
+    /**
+    * @OA\Schema(
+    *   schema="ListOrderProperties",
+    *   @OA\Xml(name="ListOrderProperties"),
+    *   @OA\Parameter(
+    *     name="page",
+    *     description="page Number",
+    *     in="query",
+    *     @OA\Schema(
+    *       type="integer"
+    *     )
+    *   ),
+    *   @OA\Parameter(
+    *     name="limit",
+    *     description="Item Per page",
+    *     in="query",
+    *     @OA\Schema(
+    *       type="integer"
+    *     )
+    *   ),
+    *   @OA\Parameter(
+    *     name="sortBy",
+    *     description="Sort By",
+    *     in="query",
+    *     @OA\Schema(
+    *       type="string"
+    *     )
+    *   ),
+    *   @OA\Parameter(
+    *     name="desc",
+    *     description="Direction of sort",
+    *     in="query",
+    *     @OA\Schema(
+    *       type="boolean"
+    *     )
+    *   ),
+    * )
+    */
+    public function ordersMethodRule(): void
+    {
+        $this->rules = [
+            'page' => ['integer',],
+            'limit' => ['integer',],
+            'sortBy' => ['string',],
+            'desc' => ['string'],
         ];
     }
 

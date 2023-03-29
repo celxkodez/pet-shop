@@ -33,15 +33,17 @@ class Order extends Model
             if (! isset($model->uuid)) {
                 $model->uuid = \Str::uuid()->toString();
             }
+        });
 
+        static::saving(function ($model) {
             $model->delivery_fee = 15.00;
 
             $products = json_decode($model->products, true);
 
             $products = Product::whereIn('uuid', collect($products)
-                    ->pluck('uuid')
-                    ->toArray()
-                )
+                ->pluck('uuid')
+                ->toArray()
+            )
                 ->select(['price', 'uuid'])
                 ->get();
 

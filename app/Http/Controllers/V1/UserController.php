@@ -184,16 +184,38 @@ class UserController extends Controller
      *  summary="List All User Orders",
      *  tags={"User"},
      *  security={ {"bearerAuth": {} }},
-     *  @OA\RequestBody(
-     *    required=false,
-     *    description="Search Params",
-     *    @OA\JsonContent(
-     *       @OA\Property(property="page", type="integer", format="page", example="30"),
-     *       @OA\Property(property="limit", type="integer", format="limit", example="40"),
-     *       @OA\Property(property="sortBy", type="string", format="sortBy", example="created_by"),
-     *       @OA\Property(property="desc", type="string", format="desc", example="true"),
-     *    ),
-     *  ),
+     *  @OA\Parameter(
+     *     name="page",
+     *     description="page Number",
+     *     in="query",
+     *     @OA\Schema(
+     *       type="integer"
+     *     )
+     *   ),
+     *   @OA\Parameter(
+     *     name="limit",
+     *     description="Item Per page",
+     *     in="query",
+     *     @OA\Schema(
+     *       type="integer"
+     *     )
+     *   ),
+     *   @OA\Parameter(
+     *     name="sortBy",
+     *     description="Sort By",
+     *     in="query",
+     *     @OA\Schema(
+     *       type="string"
+     *     )
+     *   ),
+     *   @OA\Parameter(
+     *     name="desc",
+     *     description="Direction of sort",
+     *     in="query",
+     *     @OA\Schema(
+     *       type="boolean"
+     *     )
+     *   ),
      *  @OA\Response(
      *    response=200,
      *    description="Ok"
@@ -216,7 +238,7 @@ class UserController extends Controller
      *  )
      * )
      */
-    public function userOrders(UserRequest $request): \Illuminate\Http\JsonResponse|OrderResource
+    public function userOrders(UserRequest $request): \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $input = $request->validated();
 
@@ -237,7 +259,7 @@ class UserController extends Controller
                 ->orderBy($orderByField, $orderByClause)
                 ->paginate($input['limit'] ?? 10);
 
-            return new OrderResource($data);
+            return OrderResource::collection($data);
         } catch (\Throwable $exception) {
             \Log::error($exception);
 

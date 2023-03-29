@@ -41,4 +41,15 @@ class Controller extends BaseController
             'trace' => is_null($exception) ? [] : $exception->stackTrace(),
         ], $code);
     }
+
+    protected function withErrorHandling(callable $callback)
+    {
+        try {
+            return $callback();
+        } catch (\Throwable $exception) {
+            \Log::error($exception);
+
+            return $this->errorResponse('Server Error!', 500);
+        }
+    }
 }

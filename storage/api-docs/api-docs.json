@@ -240,7 +240,7 @@
         "/api/v1/order/create": {
             "post": {
                 "tags": [
-                    "Order"
+                    "Orders"
                 ],
                 "summary": "Create A New Admin Account",
                 "operationId": "785adac124bc0364d40a53e50567f602",
@@ -255,6 +255,115 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Page not found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/order/{uuid}": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Show Order",
+                "operationId": "69de54d0d3b16e2105704e85dd5b9fcb",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of Order",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "string"
+                        },
+                        "example": "uuiuytyytytj5656jk-jnnknnkbkjnk-nghn6n565"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Page not found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/orders": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "List All Orders",
+                "operationId": "e32d5b19d3160c49d1c56082d64be5c5",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "page Number",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Item Per page",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "description": "Sort By",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "desc",
+                        "in": "query",
+                        "description": "Direction of sort",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Ok"
@@ -457,39 +566,40 @@
                 ],
                 "summary": "List All User Orders",
                 "operationId": "ea7817bd2daa7204c2175dfc02960767",
-                "requestBody": {
-                    "description": "Search Params",
-                    "required": false,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "page": {
-                                        "type": "integer",
-                                        "format": "page",
-                                        "example": "30"
-                                    },
-                                    "limit": {
-                                        "type": "integer",
-                                        "format": "limit",
-                                        "example": "40"
-                                    },
-                                    "sortBy": {
-                                        "type": "string",
-                                        "format": "sortBy",
-                                        "example": "created_by"
-                                    },
-                                    "desc": {
-                                        "type": "string",
-                                        "format": "desc",
-                                        "example": "true"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "page Number",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Item Per page",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "description": "Sort By",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "desc",
+                        "in": "query",
+                        "description": "Direction of sort",
+                        "schema": {
+                            "type": "boolean"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Ok"
@@ -920,6 +1030,11 @@
                 "xml": {
                     "name": "CreateOrderProperties"
                 }
+            },
+            "ListOrderProperties": {
+                "xml": {
+                    "name": "ListOrderProperties"
+                }
             }
         },
         "securitySchemes": {
@@ -938,7 +1053,7 @@
             "description": "Admin API Endpoints"
         },
         {
-            "name": "Order",
+            "name": "Orders",
             "description": "Order API Endpoints"
         },
         {
