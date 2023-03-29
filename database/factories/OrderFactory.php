@@ -31,9 +31,11 @@ class OrderFactory extends Factory
                 'billing' => fake()->address,
                 'shipping' => fake()->address
             ]),
-            'product' => json_encode([
-                'uuid' => Product::inRandomOrder()->first()->uuid,
-                'quantity' => fake()->randomDigit() * fake()->randomDigit()
+            'products' => json_encode([
+                [
+                    'uuid' => Product::inRandomOrder()->first()->uuid,
+                    'quantity' => fake()->randomDigit() * fake()->randomDigit()
+                ],
             ]),
             'shipped_at' => now()
         ];
