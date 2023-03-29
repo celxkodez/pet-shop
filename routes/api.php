@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\V1\AdminController;
+use App\Http\Controllers\V1\OrderController;
 use App\Http\Controllers\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -54,5 +55,20 @@ Route::prefix('v1')
                 Route::delete('/user-delete/{uuid}', 'deleteUser');
                 Route::match(['get', 'head'], '/user-listing', 'userListing');
                 Route::put('/user-edit/{uuid}', 'userEdit');
+            });
+
+        //Order EndPoints
+        Route::prefix('order')
+            ->controller(OrderController::class)
+            ->middleware('auth:api')
+            ->group(function () {
+                Route::post('/create', 'store');
+                Route::match(['get', 'head'], '/{uuid}', 'show');
+                Route::match(['put', 'patch'], '/{uuid}', 'update');
+                Route::delete('/{uuid}', 'destroy');
+                Route::match(['get', 'head'], '/{uuid}/download', 'download');
+                Route::match(['get', 'head'],'/', 'index');
+                Route::match(['get', 'head'], '/dashboard', 'dashboard');
+                Route::match(['get', 'head'], '/shipment-locator', 'shipmentLocator');
             });
 });
