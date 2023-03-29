@@ -238,6 +238,7 @@ class AdminController extends UserController
      *  path="/api/v1/admin/user-edit/{uuid}",
      *  summary="Update User Account",
      *  tags={"Admin"},
+     *  security={ {"bearerAuth": {} }},
      *  @OA\Parameter(
      *    description="UUID of User",
      *    in="path",

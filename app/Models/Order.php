@@ -27,6 +27,34 @@ class Order extends Model
         'shipped_at' => 'datetime',
     ];
 
+    protected static function booted()
+    {
+        static::creating(function ($model) {
+            if (! isset($model->uuid)) {
+                $model->uuid = \Str::uuid()->toString();
+            }
+
+            $model->delivery_fee = 15.00;
+
+            $products = json_decode($model->products, true);
+
+            $products = Product::whereIn('uuid', collect($products)
+                    ->pluck('uuid')
+                    ->toArray()
+                )
+                ->select(['price', 'uuid'])
+                ->get();
+
+            $productsAmount = $products->sum('price');
+
+            $model->amount = $productsAmount;
+
+            if ($model->amount > 500) {
+                $model->delivery_fee = 0.00;
+            }
+        });
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

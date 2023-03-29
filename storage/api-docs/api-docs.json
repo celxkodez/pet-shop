@@ -65,7 +65,7 @@
                     "Admin"
                 ],
                 "summary": "Create A New Admin Account",
-                "operationId": "c362e957098e6b4b2185ee7fd6271e8c",
+                "operationId": "727a08275c6f285499b4ab6bbe4f539b",
                 "requestBody": {
                     "description": "Supply Admin Data",
                     "required": true,
@@ -101,7 +101,7 @@
                 "tags": [
                     "Admin"
                 ],
-                "summary": "View All User Listings",
+                "summary": "View All Users",
                 "operationId": "6409b580dc46970289ea9d2b3177b632",
                 "requestBody": {
                     "description": "Filter Data",
@@ -185,7 +185,98 @@
                     "500": {
                         "description": "Internal server error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/user-delete/{uuid}": {
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Delete A User Account",
+                "operationId": "346c861a088343f73d85add500fcf798",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of User",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "string"
+                        },
+                        "example": "uuiuytyytytj5656jk-jnnknnkbkjnk-nghn6n565"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Page not found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/order/create": {
+            "post": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Create A New Admin Account",
+                "operationId": "785adac124bc0364d40a53e50567f602",
+                "requestBody": {
+                    "description": "Supply Admin Data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateOrderProperties"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Page not found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/v1/user/login": {
@@ -792,6 +883,43 @@
                 "xml": {
                     "name": "AdminListingProperties"
                 }
+            },
+            "CreateOrderProperties": {
+                "required": [
+                    "order_status_uuid",
+                    "products",
+                    "payment_uuid",
+                    "address"
+                ],
+                "properties": {
+                    "order_status_uuid": {
+                        "type": "string",
+                        "format": "Order Status UUID",
+                        "example": ""
+                    },
+                    "payment_uuid": {
+                        "type": "string",
+                        "format": "Payment UUID",
+                        "example": ""
+                    },
+                    "products": {
+                        "type": "array",
+                        "format": "Array of objects with product uuid and quantity",
+                        "items": {
+                            "type": "object"
+                        },
+                        "example": "[]"
+                    },
+                    "address": {
+                        "type": "object",
+                        "format": "Billing and Shipping address",
+                        "example": "{}"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "CreateOrderProperties"
+                }
             }
         },
         "securitySchemes": {
@@ -808,6 +936,10 @@
         {
             "name": "Admin",
             "description": "Admin API Endpoints"
+        },
+        {
+            "name": "Order",
+            "description": "Order API Endpoints"
         },
         {
             "name": "User",

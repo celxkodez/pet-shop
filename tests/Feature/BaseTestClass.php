@@ -41,4 +41,21 @@ class BaseTestClass extends TestCase
 
         return $user;
     }
+
+    protected function successPayload(array $data = [], bool $structure = false): array
+    {
+        $expected = [
+            'data' => [],
+            'status' => true,
+            'error' => null,
+            'errors' => [],
+            'extra' => [],
+        ];
+
+        if ($structure) {
+            return array_merge( array_keys($expected), $data);
+        }
+
+        return array_merge( $expected, $data);
+    }
 }
