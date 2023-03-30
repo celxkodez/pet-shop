@@ -86,4 +86,4 @@ insight: artisan-command
 copy-env: ##copy .env.example to .env
 	@$(APP) cp .env.example .env
 
-setup-application: copy-env vendor generate-appkey generate-jwt-key migrate-database start
+setup-application: start copy-env vendor generate-appkey generate-jwt-key migrate-database
