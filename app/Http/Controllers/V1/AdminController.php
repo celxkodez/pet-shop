@@ -381,7 +381,7 @@ class AdminController extends UserController
      * @OA\Delete(
      *  path="/api/v1/admin/user-delete/{uuid}",
      *  summary="Delete A User Account",
-     *  tags={"User"},
+     *  tags={"Admin"},
      *  security={ {"bearerAuth": {} }},
      *  @OA\Parameter(
      *    description="UUID of User",

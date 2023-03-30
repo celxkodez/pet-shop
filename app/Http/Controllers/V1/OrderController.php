@@ -37,7 +37,7 @@ class OrderController extends Controller
      *  security={ {"bearerAuth": {} }},
      *  @OA\RequestBody(
      *    required=true,
-     *    description="Supply Admin Data",
+     *    description="Supply Order Data",
      *    @OA\JsonContent(
      *      ref="#/components/schemas/CreateOrderProperties",
      *    ),
@@ -256,6 +256,13 @@ class OrderController extends Controller
      *       type="string",
      *       format="string"
      *    )
+     *  ),
+     *  @OA\RequestBody(
+     *    required=true,
+     *    description="Supply Order Data",
+     *    @OA\JsonContent(
+     *      ref="#/components/schemas/CreateOrderProperties",
+     *    ),
      *  ),
      *  @OA\Response(
      *    response=200,

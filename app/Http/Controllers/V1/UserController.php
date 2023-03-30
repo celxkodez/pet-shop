@@ -122,15 +122,7 @@ class UserController extends Controller
      *    required=true,
      *    description="Supply User Data",
      *    @OA\JsonContent(
-     *       required={"email","password","last_name","first_name","address","phone_number"},
-     *       @OA\Property(property="first_name", type="string", format="first_name", example="first_name"),
-     *       @OA\Property(property="last_name", type="string", format="last_name", example="last_name"),
-     *       @OA\Property(property="email", type="string", format="email", example="user@email.com"),
-     *       @OA\Property(property="password", type="string", format="password", example="password"),
-     *       @OA\Property(property="avatar", type="string", format="avatar", example="avatar"),
-     *       @OA\Property(property="address", type="string", format="address", example="address"),
-     *       @OA\Property(property="phone_number", type="string", format="phone_number", example="phone_number"),
-     *       @OA\Property(property="is_marketing", type="string", format="is_marketing", example="is_marketing"),
+     *     ref="#/components/schemas/RegisterUserProperties",
      *    ),
      *  ),
      *  @OA\Response(
@@ -277,15 +269,7 @@ class UserController extends Controller
      *    required=true,
      *    description="Update User Record",
      *    @OA\JsonContent(
-     *       required={"email","password","last_name","first_name","address","phone_number"},
-     *       @OA\Property(property="first_name", type="string", format="first_name", example="first_name"),
-     *       @OA\Property(property="last_name", type="string", format="last_name", example="last_name"),
-     *       @OA\Property(property="email", type="string", format="email", example="user@email.com"),
-     *       @OA\Property(property="password", type="string", format="password", example="password"),
-     *       @OA\Property(property="avatar", type="string", format="avatar", example="avatar"),
-     *       @OA\Property(property="address", type="string", format="address", example="address"),
-     *       @OA\Property(property="phone_number", type="string", format="phone_number", example="phone_number"),
-     *       @OA\Property(property="is_marketing", type="string", format="is_marketing", example="is_marketing"),
+     *       ref="#/components/schemas/RegisterUserProperties",
      *    ),
      *  ),
      *  @OA\Response(
@@ -337,7 +321,7 @@ class UserController extends Controller
     /**
      *
      * @OA\Delete(
-     *  path="/api/v1/user/delete",
+     *  path="/api/v1/user",
      *  summary="Delete A User Account",
      *  tags={"User"},
      *  security={ {"bearerAuth": {} }},

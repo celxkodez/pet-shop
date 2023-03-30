@@ -308,7 +308,7 @@
                 "summary": "Create A New Admin Account",
                 "operationId": "785adac124bc0364d40a53e50567f602",
                 "requestBody": {
-                    "description": "Supply Admin Data",
+                    "description": "Supply Order Data",
                     "required": true,
                     "content": {
                         "application/json": {
@@ -404,6 +404,17 @@
                         "example": "uuiuytyytytj5656jk-jnnknnkbkjnk-nghn6n565"
                     }
                 ],
+                "requestBody": {
+                    "description": "Supply Order Data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateOrderProperties"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Ok"
@@ -676,57 +687,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "email",
-                                    "password",
-                                    "last_name",
-                                    "first_name",
-                                    "address",
-                                    "phone_number"
-                                ],
-                                "properties": {
-                                    "first_name": {
-                                        "type": "string",
-                                        "format": "first_name",
-                                        "example": "first_name"
-                                    },
-                                    "last_name": {
-                                        "type": "string",
-                                        "format": "last_name",
-                                        "example": "last_name"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "user@email.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "password"
-                                    },
-                                    "avatar": {
-                                        "type": "string",
-                                        "format": "avatar",
-                                        "example": "avatar"
-                                    },
-                                    "address": {
-                                        "type": "string",
-                                        "format": "address",
-                                        "example": "address"
-                                    },
-                                    "phone_number": {
-                                        "type": "string",
-                                        "format": "phone_number",
-                                        "example": "phone_number"
-                                    },
-                                    "is_marketing": {
-                                        "type": "string",
-                                        "format": "is_marketing",
-                                        "example": "is_marketing"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/RegisterUserProperties"
                             }
                         }
                     }
@@ -828,57 +789,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "email",
-                                    "password",
-                                    "last_name",
-                                    "first_name",
-                                    "address",
-                                    "phone_number"
-                                ],
-                                "properties": {
-                                    "first_name": {
-                                        "type": "string",
-                                        "format": "first_name",
-                                        "example": "first_name"
-                                    },
-                                    "last_name": {
-                                        "type": "string",
-                                        "format": "last_name",
-                                        "example": "last_name"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "user@email.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "password"
-                                    },
-                                    "avatar": {
-                                        "type": "string",
-                                        "format": "avatar",
-                                        "example": "avatar"
-                                    },
-                                    "address": {
-                                        "type": "string",
-                                        "format": "address",
-                                        "example": "address"
-                                    },
-                                    "phone_number": {
-                                        "type": "string",
-                                        "format": "phone_number",
-                                        "example": "phone_number"
-                                    },
-                                    "is_marketing": {
-                                        "type": "string",
-                                        "format": "is_marketing",
-                                        "example": "is_marketing"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/RegisterUserProperties"
                             }
                         }
                     }
@@ -1106,6 +1017,11 @@
                         "format": "password",
                         "example": "password"
                     },
+                    "password_confirmation": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "password"
+                    },
                     "avatar": {
                         "type": "string",
                         "format": "avatar",
@@ -1225,6 +1141,67 @@
             "ListOrderProperties": {
                 "xml": {
                     "name": "ListOrderProperties"
+                }
+            },
+            "RegisterUserProperties": {
+                "required": [
+                    "email",
+                    "password",
+                    "last_name",
+                    "first_name",
+                    "address",
+                    "phone_number"
+                ],
+                "properties": {
+                    "first_name": {
+                        "type": "string",
+                        "format": "first_name",
+                        "example": "first_name"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "format": "last_name",
+                        "example": "last_name"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "user@email.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "password"
+                    },
+                    "password_confirmation": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "password"
+                    },
+                    "avatar": {
+                        "type": "string",
+                        "format": "avatar",
+                        "example": "avatar"
+                    },
+                    "address": {
+                        "type": "string",
+                        "format": "address",
+                        "example": "address"
+                    },
+                    "phone_number": {
+                        "type": "string",
+                        "format": "phone_number",
+                        "example": "phone_number"
+                    },
+                    "is_marketing": {
+                        "type": "string",
+                        "format": "is_marketing",
+                        "example": "is_marketing"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "RegisterUserProperties"
                 }
             }
         },
