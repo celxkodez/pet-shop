@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "61baa9a73d951458fef156ed8b866d8c",
+    "content-hash": "6a9a17393eb3d3ce5fe470bd0e2834f3",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -138,6 +138,45 @@
                 }
             ],
             "time": "2022-08-10T22:54:19+00:00"
+        },
+        {
+            "name": "celestine/notification-services",
+            "version": "dev-ft-l4-challenge",
+            "dist": {
+                "type": "path",
+                "url": "packages/notification-services",
+                "reference": "86143037497f41d4899ef734d2a87e958eded9c3"
+            },
+            "require": {
+                "php": "^8.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Celestine\\NotificationServices\\NotificationServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Celestine\\NotificationServices\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Celestine Stephen",
+                    "email": "decele2011@gmail.com"
+                }
+            ],
+            "description": "Notification Service for order status changes",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "darkaonline/l5-swagger",
@@ -11174,7 +11213,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "celestine/notification-services": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

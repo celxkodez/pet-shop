@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Celestine\NotificationServices\Events\OrderStatusEvent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -20,6 +21,20 @@ class OrderStatus extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    protected static function booted()
+    {
+        static::creating(function ($model) {
+            if (! isset($model->uuid)) {
+                $model->uuid = \Str::uuid()->toString();
+            }
+        });
+
+        static::created(function ($model) {
+
+            OrderStatusEvent::dispatch($model->uuid, $model->title, now()->toString());
+        });
+    }
 
     public function order(): HasOne
     {
