@@ -17,7 +17,7 @@ git clone https://github.com/celxkodez/pet-shop.git
 ```
 <p>navigate to the project directory.</p>
 
-* Note: this project can be setup traditionally or using docker.
+* Note: this project requires docker for easy setup.
 
 #### with docker
 <p>On the Project root directory, run the commands</p>
@@ -37,7 +37,7 @@ to seed the database, simply use
 after that, visit you can view the application on your local machine
 with http://127.0.0.1:8000/ or http://localhost:8000/
 
-if every this is successful, visiting that url should return a json
+if everything this is successful, visiting that url should return a json
 response object with ``{"message": "application is up"}``.
 
 ## Contributing
