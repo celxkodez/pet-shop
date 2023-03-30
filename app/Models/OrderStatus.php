@@ -31,6 +31,7 @@ class OrderStatus extends Model
         });
 
         static::updated(function ($model) {
+            //example usage for l4 package challenge
             OrderStatusEvent::dispatch($model->uuid, $model->title, now()->toString());
         });
     }

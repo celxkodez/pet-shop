@@ -68,7 +68,5 @@ Route::prefix('v1')
                 Route::delete('/{uuid}', 'destroy');
                 Route::match(['get', 'head'], '/{uuid}/download', 'download');
                 Route::match(['get', 'head'], '/', 'index');
-                Route::match(['get', 'head'], '/dashboard', 'dashboard');
-                Route::match(['get', 'head'], '/shipment-locator', 'shipmentLocator');
             });
 });
