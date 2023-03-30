@@ -144,6 +144,18 @@ class OrderEndpointRequestTest extends BaseTestClass
         ]);
     }
 
+    public function test_order_can_be_uploaded()
+    {
+        $authUser = $this->loginUser('Admin');
+
+        $this->artisan('db:seed');
+        $order = Order::first();
+
+        $response = $this->get('api/v1/order/' . $order->uuid,  $this->requestHeaders);
+
+        $response->assertDownload($order->uuid . ".pdf");
+    }
+
     public function dataProvider(): array
     {
         return [

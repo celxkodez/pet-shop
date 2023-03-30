@@ -321,15 +321,99 @@
                         "bearerAuth": []
                     }
                 ]
+            },
+            "put": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Show Order",
+                "operationId": "b994d7152c7d94e19753d17ba55082d8",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of Order",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "string"
+                        },
+                        "example": "uuiuytyytytj5656jk-jnnknnkbkjnk-nghn6n565"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Page not found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Delete an Order",
+                "operationId": "a6290d6e07443d8b92ecf8283f142d6a",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of Order",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "string"
+                        },
+                        "example": "uuiuytyytytj5656jk-jnnknnkbkjnk-nghn6n565"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Page not found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/v1/orders": {
+        "/api/v1/order": {
             "get": {
                 "tags": [
                     "Orders"
                 ],
                 "summary": "List All Orders",
-                "operationId": "e32d5b19d3160c49d1c56082d64be5c5",
+                "operationId": "a664bc10b36e2203fba446103026ad1b",
                 "parameters": [
                     {
                         "name": "page",
@@ -362,6 +446,50 @@
                         "schema": {
                             "type": "boolean"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Page not found"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/order/{uuid}/download": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Downlad an Order",
+                "operationId": "1648a871a2e4e7650baafe047c8cb82e",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of Order",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "string"
+                        },
+                        "example": "uuiuytyytytj5656jk-jnnknnkbkjnk-nghn6n565"
                     }
                 ],
                 "responses": {

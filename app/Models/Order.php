@@ -41,9 +41,9 @@ class Order extends Model
             $products = json_decode($model->products, true);
 
             $products = Product::whereIn('uuid', collect($products)
-                ->pluck('uuid')
-                ->toArray()
-            )
+                    ->pluck('uuid')
+                    ->toArray()
+                )
                 ->select(['price', 'uuid'])
                 ->get();
 

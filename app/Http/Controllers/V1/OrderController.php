@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\V1;
 
 use App\Contracts\RepositoryInterfaces\OrderRepositoryContract;
+use App\Exports\OrderExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\OrderStatus;
 use App\Models\Payment;
-use App\Models\Product;
-use Illuminate\Http\Request;
-use PHPUnit\Logging\Exception;
+use Barryvdh\DomPDF\PDF;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * @OA\Tag(
@@ -156,7 +156,7 @@ class OrderController extends Controller
 
     /**
      * @OA\Get(
-     *  path="/api/v1/orders",
+     *  path="/api/v1/order",
      *  summary="List All Orders",
      *  tags={"Orders"},
      *  security={ {"bearerAuth": {} }},
@@ -243,7 +243,7 @@ class OrderController extends Controller
      *
      * @OA\Put(
      *  path="/api/v1/order/{uuid}",
-     *  summary="Show Order",
+     *  summary="Update Order",
      *  tags={"Orders"},
      *  security={ {"bearerAuth": {} }},
      *  @OA\Parameter(
@@ -345,6 +345,63 @@ class OrderController extends Controller
 
             if ($order) {
                 return $this->jsonResponse(200, true, []);
+            }
+
+            return $this->errorResponse('Order Not Found!', 404);
+        });
+    }
+
+    /**
+     *
+     * @OA\Get(
+     *  path="/api/v1/order/{uuid}/download",
+     *  summary="Downlad an Order",
+     *  tags={"Orders"},
+     *  security={ {"bearerAuth": {} }},
+     *  @OA\Parameter(
+     *    description="UUID of Order",
+     *    in="path",
+     *    name="uuid",
+     *    required=true,
+     *    example="uuiuytyytytj5656jk-jnnknnkbkjnk-nghn6n565",
+     *    @OA\Schema(
+     *       type="string",
+     *       format="string"
+     *    )
+     *  ),
+     *  @OA\Response(
+     *    response=200,
+     *    description="Ok"
+     *  ),
+     *  @OA\Response(
+     *    response=401,
+     *    description="Unauthorized"
+     *  ),
+     *  @OA\Response(
+     *    response=404,
+     *    description="Page not found"
+     *  ),
+     *  @OA\Response(
+     *    response=422,
+     *    description="Unprocessable Entity"
+     *  ),
+     *  @OA\Response(
+     *    response=500,
+     *    description="Internal server error"
+     *  )
+     * )
+     */
+    public function download($uuid)
+    {
+        return $this->withErrorHandling(function () use ($uuid) {
+            $order = Order::where('uuid', $uuid)
+                ->with('user')
+                ->first();
+
+            if ($order) {
+
+                $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('exports.order', ['order' => $order]);
+                return $pdf->download($order->uuid . '.pdf');
             }
 
             return $this->errorResponse('Order Not Found!', 404);
