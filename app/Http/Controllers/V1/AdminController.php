@@ -160,13 +160,78 @@ class AdminController extends UserController
      *  summary="View All Users",
      *  tags={"Admin"},
      *  security={ {"bearerAuth": {} }},
-     *  @OA\RequestBody(
-     *    required=false,
-     *    description="Filter Data",
-     *    @OA\JsonContent(
-     *     ref="#/components/schemas/AdminListingProperties"
-     *    ),
-     *  ),
+     *  @OA\Parameter(
+     *     name="page",
+     *     description="page Number",
+     *     in="query",
+     *     @OA\Schema(
+     *       type="integer"
+     *     )
+     *   ),
+     *   @OA\Parameter(
+     *     name="limit",
+     *     description="Item Per page",
+     *     in="query",
+     *     @OA\Schema(
+     *       type="integer"
+     *     )
+     *   ),
+     *   @OA\Parameter(
+     *     name="sortBy",
+     *     description="Sort By",
+     *     in="query",
+     *     @OA\Schema(
+     *       type="string"
+     *     )
+     *   ),
+     *   @OA\Parameter(
+     *     name="desc",
+     *     description="Direction of sort",
+     *     in="query",
+     *     @OA\Schema(
+     *       type="boolean"
+     *     )
+     *   ),
+     *   @OA\Parameter(
+     *     name="email",
+     *     description="User Email",
+     *     in="query",
+     *     @OA\Schema(
+     *       type="string"
+     *     )
+     *   ),
+     *   @OA\Parameter(
+     *     name="address",
+     *     description="User Address",
+     *     in="query",
+     *     @OA\Schema(
+     *       type="string"
+     *     )
+     *   ),
+     *   @OA\Parameter(
+     *     name="phone",
+     *     description="User Phone",
+     *     in="query",
+     *     @OA\Schema(
+     *       type="string"
+     *     )
+     *   ),
+     *   @OA\Parameter(
+     *     name="created_at",
+     *     description="Created At",
+     *     in="query",
+     *     @OA\Schema(
+     *       type="string"
+     *     )
+     *   ),
+     *   @OA\Parameter(
+     *     name="marketing",
+     *     description="User Is marketing",
+     *     in="query",
+     *     @OA\Schema(
+     *       type="string"
+     *     )
+     *   ),
      *  @OA\Response(
      *    response=200,
      *    description="Ok"
