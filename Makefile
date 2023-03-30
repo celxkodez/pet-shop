@@ -63,6 +63,10 @@ generate-appkey: ## Generate laravel application key.
 generate-appkey: p=key:generate
 generate-appkey: artisan-command
 
+generate-jwt-key: ## Generate jwt secret key.
+generate-jwt-key: p=jwt:generate
+generate-jwt-key: artisan-command
+
 migrate-database: ## Run all laravel migrations present in the laravel migration directory.
 migrate-database: p=migrate
 migrate-database: artisan-command
@@ -78,3 +82,8 @@ run-test: artisan-command
 insight: ## Run All PHP insight.
 insight: p=insight
 insight: artisan-command
+
+copy-env: ##copy .env.example to .env
+	@$(APP) cp .env.example .env
+
+setup-application: copy-env vendor generate-appkey generate-jwt-key migrate-database start

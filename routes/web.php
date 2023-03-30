@@ -14,5 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 //
 Route::get('/', function () {
-    return view('exports.orders', ['order' => \App\Models\Order::first()] );
+    return response()->json(['message' => "application is up"]);
 });
