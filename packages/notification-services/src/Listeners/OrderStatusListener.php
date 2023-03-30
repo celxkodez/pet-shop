@@ -6,6 +6,7 @@ use Celestine\NotificationServices\Events\OrderStatusEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class OrderStatusListener
 {
@@ -40,7 +41,11 @@ class OrderStatusListener
             "Content-Type" => "application/json"
         ];
 
-        Http::withHeaders($headers)
-            ->post(config('notification-services.webhook_url'), $message);
+        try {
+            Http::withHeaders($headers)
+                ->post(config('notification-services.webhook_url'), $message);
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+        }
     }
 }

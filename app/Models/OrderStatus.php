@@ -30,8 +30,7 @@ class OrderStatus extends Model
             }
         });
 
-        static::created(function ($model) {
-
+        static::updated(function ($model) {
             OrderStatusEvent::dispatch($model->uuid, $model->title, now()->toString());
         });
     }
