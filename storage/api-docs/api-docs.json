@@ -103,17 +103,80 @@
                 ],
                 "summary": "View All Users",
                 "operationId": "6409b580dc46970289ea9d2b3177b632",
-                "requestBody": {
-                    "description": "Filter Data",
-                    "required": false,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AdminListingProperties"
-                            }
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "page Number",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Item Per page",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "description": "Sort By",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "desc",
+                        "in": "query",
+                        "description": "Direction of sort",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "User Email",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "address",
+                        "in": "query",
+                        "description": "User Address",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "phone",
+                        "in": "query",
+                        "description": "User Phone",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "created_at",
+                        "in": "query",
+                        "description": "Created At",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "marketing",
+                        "in": "query",
+                        "description": "User Is marketing",
+                        "schema": {
+                            "type": "string"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Ok"
@@ -326,7 +389,7 @@
                 "tags": [
                     "Orders"
                 ],
-                "summary": "Show Order",
+                "summary": "Update Order",
                 "operationId": "b994d7152c7d94e19753d17ba55082d8",
                 "parameters": [
                     {
