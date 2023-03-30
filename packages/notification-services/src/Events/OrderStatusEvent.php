@@ -12,7 +12,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class OrderStatusEvent implements ShouldQueue
+class OrderStatusEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

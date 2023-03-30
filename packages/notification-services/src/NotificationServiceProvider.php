@@ -2,12 +2,9 @@
 
 namespace Celestine\NotificationServices;
 
-use Celestine\NotificationServices\Events\OrderStatusEvent;
-use Celestine\NotificationServices\Listeners\OrderStatusListener;
-use Illuminate\Foundation\Support\Providers\EventServiceProvider;
-use Illuminate\Support\Facades\Event;
+use Illuminate\Support\ServiceProvider;
 
-class NotificationServiceProvider extends EventServiceProvider
+class NotificationServiceProvider extends ServiceProvider
 {
     /**
      * Event
@@ -17,7 +14,7 @@ class NotificationServiceProvider extends EventServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->register(EventServiceProvider::class);
     }
 
     /**
@@ -31,10 +28,6 @@ class NotificationServiceProvider extends EventServiceProvider
 
         $this->publishes([
             $config => config_path('notification-services.php')
-        ]);
-
-        Event::listen(OrderStatusEvent::class, [
-            OrderStatusListener::class, 'handle'
         ]);
     }
 

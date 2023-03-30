@@ -7,6 +7,11 @@
             "Celestine\\NotificationServices\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Celestine\\NotificationServices\\Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "Celestine Stephen",
@@ -22,6 +27,15 @@
         }
     },
     "require": {
-        "php": "^8.2"
+        "php": "^8.2",
+        "illuminate/support": "^8.0|^9.0|^10.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.1",
+        "phpunit/phpunit": "^10.0"
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
     }
 }
