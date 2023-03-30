@@ -1,0 +1,27 @@
+{
+    "name": "celestine/notification-services",
+    "description": "Notification Service for order status changes",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Celestine\\NotificationServices\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Celestine Stephen",
+            "email": "decele2011@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Celestine\\NotificationServices\\NotificationServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "php": "^8.2"
+    }
+}
