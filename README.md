@@ -22,6 +22,13 @@ git clone https://github.com/celxkodez/pet-shop.git
 #### with docker
 <p>On the Project root directory, run the commands</p>
 
+copy .env.example content to .env
+
+if target machine is a unix based system, simply run
+```bash
+    cp .env.example .env
+```
+
 ```bash
     make setup-application
 ```
