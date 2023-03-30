@@ -29,15 +29,20 @@ if target machine is a unix based system, simply run
     cp .env.example .env
 ```
 
-Run
+Then, run these commands.
 
 ```bash
     make setup-application
 ```
 
 ```bash
+    make migrate-database
+```
+
+```bash
     make generate-jwt-key
 ```
+
 The above commands will install all dependency and perform all necessary
 application setup processes.
 
