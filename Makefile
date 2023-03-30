@@ -83,4 +83,4 @@ insight: ## Run All PHP insight.
 insight: p=insight
 insight: artisan-command
 
-setup-application: start vendor generate-appkey generate-jwt-key migrate-database
+setup-application: start vendor generate-appkey migrate-database

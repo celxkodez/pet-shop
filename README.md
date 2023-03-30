@@ -29,10 +29,16 @@ if target machine is a unix based system, simply run
     cp .env.example .env
 ```
 
+Run
+
 ```bash
     make setup-application
 ```
-The above command will install all dependency and perform all necessary
+
+```bash
+    make generate-jwt-key
+```
+The above commands will install all dependency and perform all necessary
 application setup processes.
 
 to seed the database, simply use
