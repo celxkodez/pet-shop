@@ -44,7 +44,7 @@ composer: ## Run composer, pass the parameter "p=" to run a given command, examp
 	@$(COMPOSER) $(p)
 
 vendor: ## Install vendors according to the current composer.lock file
-vendor: p=install --prefer-dist --no-dev --no-progress --no-scripts --no-interaction
+vendor: p=install --prefer-dist --no-progress --no-scripts --no-interaction
 vendor: composer
 
 ## —— Laravel ———————————————————————————————————————————————————————————————
