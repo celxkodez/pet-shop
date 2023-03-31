@@ -69,6 +69,7 @@ class AdminRequest extends UserRequest
     public function editUserMethodRule(): void
     {
         $this->createUserMethodRule();
+        $this->rules['email'] = ['required', 'email'];
     }
 
     public function getPath(): string

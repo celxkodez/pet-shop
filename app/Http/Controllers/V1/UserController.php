@@ -306,7 +306,7 @@ class UserController extends Controller
             $user->update(array_merge([
                 'password' => $password,
                 'is_marketing' => isset($input['is_marketing']),
-            ], \Arr::except($input, ['password', 'is_marketing'])));
+            ], \Arr::except($input, ['password', 'is_marketing', 'email'])));
 
             $responseData = new UserResource($user);
 
